@@ -46,11 +46,11 @@ async function load() {
 }
 
 async function setup() {
-  myCanvas = createCanvas(400, 400);
-  videoCanvas = createCanvas(320, 240);
+  myCanvas = createCanvas(width, height);
+  videoCanvas = createCanvas(width, height);
   await load();
   video = createCapture(VIDEO, videoReady);
-  video.size(320, 240);
+  video.size(width, height);
   video.hide();
 }
 
@@ -66,7 +66,7 @@ function draw() {
 
   if (probability > 0.8 && classification != "None") {
     push();
-    textSize(200);
+    textSize(16);
     fill(255);
     textAlign(CENTER);
     text(classification, width / 2, height - 50);
