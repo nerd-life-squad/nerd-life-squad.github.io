@@ -23,7 +23,6 @@ function setup() {
   video.hide();
 
   flippedVideo = ml5.flipImage(video);
-  classifyVideo();
 }
 
 function draw() {
