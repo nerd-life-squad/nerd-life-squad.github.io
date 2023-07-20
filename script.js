@@ -12,7 +12,7 @@ let sound, sound2;
 
 function preload() {
   classifier = ml5.imageClassifier(poseModelURL);
-  sound = loadSound("mendrisio-music.mp3");
+  sound = loadSound("../mendrisio-music.mp3");
 }
 
 function setup() {
