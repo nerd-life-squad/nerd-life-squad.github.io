@@ -1,3 +1,62 @@
+@font-face { font-family: PowerGrotesk; src: url('Power-Grotesk/PowerGrotesk-Regular.otf'); } 
+
 body {
   margin: 0;
+  font-family: PowerGrotesk;
+  background: #F5F5F5;
 }
+
+h1, h2, h3 {
+  color: #00F0FF;
+}
+
+h1{
+  font-size: 80px;
+}
+
+h2{
+  font-size: 40px;
+}
+
+h2{
+  font-size: 25px;
+}
+
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0px;
+}
+
+.column {
+  box-sizing: border-box;
+  padding: 0 12px 0 12px;
+}
+
+.col-1 {
+  width: 100%;
+}
+
+.col-2 {
+  width: 50%;
+}
+
+.col-3 {
+  width: 40%;
+}
+
+.col-4 {
+  width: 30%;
+}
+
+.col-6 {
+  width: 20%;
+}
+
+.col-12 {
+  width: 8.3%;
+}
+
+
+

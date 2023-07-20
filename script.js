@@ -1,91 +1,71 @@
-/*
-Here we check the result we get from the posnet teachable machine.
-See letters
 
-This sketch is slightly different.
-The syntax of p5 is different.
-Also need to add another library in the html file.
-*/
-
-/*
-Here we load the file from teachablemachine
-*/
-
-const modelURL = "https://teachablemachine.withgoogle.com/models/COSKN4igO/";
+const modelURL = 'https://teachablemachine.withgoogle.com/models/COSKN4igO/';
+// the json file (model topology) has a reference to the bin file (model weights)
 const checkpointURL = modelURL + "model.json";
+// the metatadata json file contains the text labels of your model and additional information
 const metadataURL = modelURL + "metadata.json";
 
-const flip = true;
+
+const flip = true; // whether to flip the webcam
 
 let model;
 let totalClasses;
 let myCanvas;
 
-let classification = "None";
+let classification = "None Yet";
 let probability = "100";
 let poser;
 let video;
-let sound;
-let sound2;
+let button;
 
-/*
-preloadsound
-*/
-function preload() {
-  sound = loadSound("mendrisio-music.mp3");
-  /*sound2 = loadSound("orchestra.wav");*/
-}
-
-/*
-Here we load the positions 
-*/
+// A function that loads the model from the checkpoint
 async function load() {
   model = await tmPose.load(checkpointURL, metadataURL);
   totalClasses = model.getTotalClasses();
   console.log("Number of classes, ", totalClasses);
 }
 
+
 async function setup() {
+  fontRegular = loadFont('Power-Grotesk/PowerGrotesk-Regular.otf');
   await load();
-  myCanvas = createCanvas(windowWidth, windowHeight);
+  myCanvas = createCanvas(windowWidth, windowHeight); 
   video = createCapture(VIDEO, videoReady);
   video.size(width, height);
   video.hide();
+
+  button = createButton('ABOUT THIS PROJECT');
+  button.position(30, windowHeight -60);
+  button.mousePressed(about);
+  col = color(0, 240, 255);
+  button.style("text-font", fontRegular);
+  button.style("background-color", col);
+  button.style("border", "none");
+  button.style("padding", "12px 16px");
+  button.style("border-radius", "60px");
+}
+
+function about() {
+  window.open('../about.html');
 }
 
 function draw() {
-  background(0);
-  if (video)
-    image(video, 0, 0, width, height);
+  background(255);
+  if(video) 
+    image(video,0,0,width, height);
     filter(GRAY);
-    fill(0, 240, 255);
-  textSize(16);
-  text("Result:" + classification, 10, 40);
-  text("Probability:" + probability, 10, 20);
-  textSize(8);
+  fill(0,240,255);
+  textFont(fontRegular);
+  textSize(60);
+  text("DEW Digital Embodiment Wave", 30, 60);
+  textSize(18);
+  text("Result:" + classification, 30, 100);
 
-  if (probability > 0.8 && classification != "None") {
-    push();
-    textSize(16);
-    fill(255);
-    textAlign(CENTER);
-    text(classification, width / 2, height - 50);
-    pop();
-    // you can use thia part for to something
-    if (classification == "stop") {
-      // Stop sound when test pose is detected
-      if (sound.isPlaying() == true) {
-        sound.stop();
-      }
-    } else {
-      // Play sound for all other classifications
-      if (sound.isPlaying() == false) {
-        sound.play();
-      }
-    } 
-  }
+  text("Probability:" + probability, 30, 130)
+  ///ALEX insert if statement here testing classification against apppropriate part of array for this time in your video
 
-  if (poser) {
+  textSize(12);
+  if (poser) { //did we get a skeleton yet;
     for (var i = 0; i < poser.length; i++) {
       let x = poser[i].position.x;
       let y = poser[i].position.y;
@@ -93,6 +73,7 @@ function draw() {
       text(poser[i].part, x + 4, y);
     }
   }
+
 }
 
 function videoReady() {
@@ -100,28 +81,166 @@ function videoReady() {
   predict();
 }
 
-/*
-This function is to be copied and pasted.
-What happens here is that we make a prediction of what the letter might be
-*/
+
 async function predict() {
+  // Prediction #1: run input through posenet
+  // predict can take in an image, video or canvas html element
   const flipHorizontal = false;
-  const { pose, posenetOutput } = await model.estimatePose(
+  const {
+    pose,
+    posenetOutput
+  } = await model.estimatePose(
     video.elt, //webcam.canvas,
     flipHorizontal
   );
+  // Prediction 2: run input through teachable machine assification model
   const prediction = await model.predict(
     posenetOutput,
     flipHorizontal,
     totalClasses
   );
 
-  const sortedPrediction = prediction.sort(
-    (a, b) => -a.probability + b.probability
-  );
+  // console.log(prediction);
+  
+  // Sort prediction array by probability
+  // So the first classname will have the highest probability
+  const sortedPrediction = prediction.sort((a, b) => -a.probability + b.probability);
 
+  //communicate these values back to draw function with global variables
   classification = sortedPrediction[0].className;
   probability = sortedPrediction[0].probability.toFixed(2);
   if (pose) poser = pose.keypoints; // is there a skeleton
   predict();
 }
+
+// /*
+// Here we check the result we get from the posnet teachable machine.
+// See letters
+
+// This sketch is slightly different.
+// The syntax of p5 is different.
+// Also need to add another library in the html file.
+// */
+
+// /*
+// Here we load the file from teachablemachine
+// */
+
+// // const modelURL = "https://teachablemachine.withgoogle.com/models/COSKN4igO/";
+// const modelURL = "https://teachablemachine.withgoogle.com/models/_mqZ7_65G/";
+// const checkpointURL = modelURL + "model.json";
+// const metadataURL = modelURL + "metadata.json";
+
+// const flip = true;
+
+// let model;
+// let totalClasses;
+// let myCanvas;
+
+// let classification = "None";
+// let probability = "100";
+// let poser;
+// let video;
+// let sound;
+// let sound2;
+
+// /*
+// preloadsound
+// */
+// function preload() {
+//   sound = loadSound("mendrisio-music.mp3");
+//   /*sound2 = loadSound("orchestra.wav");*/
+// }
+
+// /*
+// Here we load the positions 
+// */
+// async function load() {
+//   model = await tmPose.load(checkpointURL, metadataURL);
+//   totalClasses = model.getTotalClasses();
+//   console.log("Number of classes, ", totalClasses);
+// }
+
+// async function setup() {
+//   await load();
+//   myCanvas = createCanvas(windowWidth, windowHeight);
+//   video = createCapture(VIDEO, videoReady);
+//   video.size(width, height);
+//   video.hide();
+// }
+
+// function draw() {
+//   background(0);
+//   if (video)
+//     image(video, 0, 0, width, height);
+//     filter(GRAY);
+//     fill(0, 240, 255);
+//     textSize(60);
+//     text("DEW - Digital Embodiment Wave", 30, 60);
+//     textSize(16);
+//     text("Result:" + classification, 30, 120);
+//     text("Probability:" + probability, 30, 140);
+//     textSize(8);
+
+//     console.log(classification + " " + probability)
+//   if (probability > 0.8 && classification != "None") {
+//     push();
+//     textSize(16);
+//     fill(255);
+//     textAlign(CENTER);
+//     text(classification, width / 2, height - 50);
+//     pop();
+//     // you can use thia part for to something
+//     if (classification == "stop") {
+//       // Stop sound when test pose is detected
+//       if (sound.isPlaying() == true) {
+//         sound.stop();
+//       }
+//     } else {
+//       // Play sound for all other classifications
+//       if (sound.isPlaying() == false) {
+//         sound.play();
+//       }
+//     } 
+//   }
+
+//   if (poser) {
+//     for (var i = 0; i < poser.length; i++) {
+//       let x = poser[i].position.x;
+//       let y = poser[i].position.y;
+//       ellipse(x, y, 5, 5);
+//       text(poser[i].part, x + 4, y);
+//     }
+//   }
+// }
+
+// function videoReady() {
+//   console.log("Video Ready");
+//   predict();
+// }
+
+// /*
+// This function is to be copied and pasted.
+// What happens here is that we make a prediction of what the letter might be
+// */
+// async function predict() {
+//   const flipHorizontal = false;
+//   const { pose, posenetOutput } = await model.estimatePose(
+//     video.elt, //webcam.canvas,
+//     flipHorizontal
+//   );
+//   const prediction = await model.predict(
+//     posenetOutput,
+//     flipHorizontal,
+//     totalClasses
+//   );
+
+//   const sortedPrediction = prediction.sort(
+//     (a, b) => -a.probability + b.probability
+//   );
+
+//   classification = sortedPrediction[0].className;
+//   probability = sortedPrediction[0].probability.toFixed(2);
+//   if (pose) poser = pose.keypoints; // is there a skeleton
+//   predict();
+// }
