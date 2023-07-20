@@ -11,8 +11,8 @@ let label = "";
 let sound, sound2;
 
 function preload() {
-  classifier = ml5.imageClassifier(poseModelURL + "../data-assets/model/model.json");
-  sound = loadSound("mendrisio-music.mp3");
+  classifier = ml5.imageClassifier(poseModelURL);
+  sound = loadSound("../mendrisio-music.mp3");
 }
 
 function setup() {
