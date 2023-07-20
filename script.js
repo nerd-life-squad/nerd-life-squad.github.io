@@ -57,11 +57,11 @@ async function setup() {
 function draw() {
   background(0);
   if (video)
-    //image(video, 0, 0);
+    image(video, 0, 0);
     fill(255, 0, 0);
   textSize(16);
-  //text("Result:" + classification, 10, 40);
-  //text("Probability:" + probability, 10, 20);
+  text("Result:" + classification, 10, 40);
+  text("Probability:" + probability, 10, 20);
   textSize(8);
 
   if (probability > 0.8 && classification != "None") {
