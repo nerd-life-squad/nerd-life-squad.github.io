@@ -79,7 +79,9 @@ function draw() {
         sound.stop();
       }
     } else {
+       if (sound.isPlaying() == false) {
         sound.play();
+        }
       }
 
     //else if (classification == "Class 2") {
