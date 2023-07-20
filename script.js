@@ -55,8 +55,6 @@ function draw() {
 
 }
 
-
-
 // When we get a result
 function gotResult(error, results) {
   if (error) {
