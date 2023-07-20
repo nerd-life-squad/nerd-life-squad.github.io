@@ -78,8 +78,12 @@ function draw() {
       if (sound.isPlaying() == true) {
         sound.stop();
       }
-    } else if (classification == "Class 2") {
-      sound.play();
+    } 
+
+    else if (classification == "Class 2") {
+      if (sound.isPlaying() == false) {
+        sound.play();
+      }
     } 
   }
 
