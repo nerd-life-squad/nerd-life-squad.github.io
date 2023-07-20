@@ -71,7 +71,7 @@ function draw() {
     textAlign(CENTER);
     text(classification, width / 2, height - 50);
     pop();
-
+    sound.play();
     // you can use thia part for to something
     if (classification == "test pose") {
       //play sound
@@ -80,11 +80,11 @@ function draw() {
       }
     } 
 
-    else if (classification == "Class 2") {
-      if (sound.isPlaying() == false) {
-        sound.play();
-      }
-    } 
+    //else if (classification == "Class 2") {
+    //  if (sound.isPlaying() == false) {
+    //    sound.play();
+    // }
+    //} 
   }
 
   if (poser) {
