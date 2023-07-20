@@ -11,7 +11,7 @@ Also need to add another library in the html file.
 Here we load the file from teachablemachine
 */
 
-const modelURL = "https://teachablemachine.withgoogle.com/models/WLt0TIdVI/";
+const modelURL = "https://teachablemachine.withgoogle.com/models/COSKN4igO/";
 const checkpointURL = modelURL + "model.json";
 const metadataURL = modelURL + "metadata.json";
 
@@ -46,19 +46,19 @@ async function load() {
 }
 
 async function setup() {
-  myCanvas = createCanvas(windowWidth, windowHeight);
-  videoCanvas = createCanvas(windowWidth, windowHeight);
   await load();
+  myCanvas = createCanvas(windowWidth, windowHeight);
   video = createCapture(VIDEO, videoReady);
-  video.size(windowWidth, windowHeight);
+  video.size(width, height);
   video.hide();
 }
 
 function draw() {
   background(0);
   if (video)
-    image(video, 0, 0);
-    fill(255, 0, 0);
+    image(video, 0, 0, width, height);
+    filter(GRAY);
+    fill(0, 240, 255);
   textSize(16);
   text("Result:" + classification, 10, 40);
   text("Probability:" + probability, 10, 20);
@@ -71,24 +71,18 @@ function draw() {
     textAlign(CENTER);
     text(classification, width / 2, height - 50);
     pop();
-    sound.play();
     // you can use thia part for to something
-    if (classification == "test pose") {
-      //play sound
+    if (classification == "stop") {
+      // Stop sound when test pose is detected
       if (sound.isPlaying() == true) {
         sound.stop();
       }
     } else {
-       if (sound.isPlaying() == false) {
+      // Play sound for all other classifications
+      if (sound.isPlaying() == false) {
         sound.play();
-        }
       }
-
-    //else if (classification == "Class 2") {
-    //  if (sound.isPlaying() == false) {
-    //    sound.play();
-    // }
-    //} 
+    } 
   }
 
   if (poser) {
