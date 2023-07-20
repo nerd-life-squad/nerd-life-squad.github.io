@@ -28,6 +28,9 @@ let video;
 let sound;
 let sound2;
 
+let width = windowWidth;
+let length = windowHeight;
+
 /*
 preloadsound
 */
