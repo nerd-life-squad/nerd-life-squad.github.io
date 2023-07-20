@@ -28,9 +28,6 @@ let video;
 let sound;
 let sound2;
 
-let width = windowWidth;
-let length = windowHeight;
-
 /*
 preloadsound
 */
@@ -49,11 +46,11 @@ async function load() {
 }
 
 async function setup() {
-  myCanvas = createCanvas(width, height);
-  videoCanvas = createCanvas(width, height);
+  myCanvas = createCanvas(windowWidth, windowHeight);
+  videoCanvas = createCanvas(windowWidth, windowHeight);
   await load();
   video = createCapture(VIDEO, videoReady);
-  video.size(width, height);
+  video.size(windowWidth, windowHeight);
   video.hide();
 }
 
