@@ -23,9 +23,10 @@ let data = [];
 //music related varibles
 let track;
 let volume = 1.0; // Starting volume (0.0 to 1.0)
-let fadeAmount = 0.01; // Amount to decrease the volume each frame
+let fadeAmount = 0.03; // Amount to decrease the volume each frame
 let pitch = 1.0;
 
+let frameCountOffset = 0;
 
 function preload() {
    track = loadSound("mendrisio-track-one.mp3", sounLoaded);
@@ -101,12 +102,37 @@ function draw() {
 
   text("Probability:" + probability, 30, 130)
   ///ALEX insert if statement here testing classification against apppropriate part of array for this time in your video
+
+  if (track.isPlaying()) {
+    let waveform = track.getPeaks(width);
+    noFill();
+    beginShape();
+    stroke(0, 240, 255); // Blue color for the waveform
+    strokeWeight(0.6);
+
+    for (let i = 0; i < waveform.length; i++) {
+      let x = map(i, 0, waveform.length, 0, width);
+      let y = map(waveform[i], -1, 1, height, 0);
+
+      // Apply animation to the y-coordinate of the waveform
+      y += sin((i + frameCountOffset) * 0.1) * 60; // You can adjust the animation speed and amplitude
+
+      vertex(x, y);
+    }
+
+    endShape();
+
+    // Increment frameCountOffset to animate the waveform
+    frameCountOffset++;
+  }
+  noStroke();
+
   if (probability > 0.5 && classification != "None") {
      push();
      textSize(250);
      fill(255);
      textAlign(CENTER);
-     text(classification, width / 2, height -50);
+     text(classification, width / 2, height /2 + 50);
      pop();
      // you can use thia part for to something
      if (classification == "volume" && volume >0) {
@@ -135,29 +161,14 @@ function draw() {
     }
   }
 
-     
-  textSize(12);
+  textSize(14);
   if (poser) { //did we get a skeleton yet;
     for (var i = 0; i < poser.length; i++) {
       let x = poser[i].position.x;
       let y = poser[i].position.y;
-      ellipse(x, y, 5, 5);
+      ellipse(x, y, 6, 6);
       text(poser[i].part, x + 4, y);
     }
-  }
-
-  if (mySound.isPlaying()) {
-    let waveform = mySound.getPeaks(width);
-    noFill();
-    beginShape();
-    stroke(0, 240, 255); // Blue color for the waveform
-    strokeWeight(2);
-    for (let i = 0; i < waveform.length; i++) {
-      let x = map(i, 0, waveform.length, 0, width);
-      let y = map(waveform[i], -1, 1, height, 0);
-      vertex(x, y);
-    }
-    endShape();
   }
 }
 
