@@ -24,6 +24,12 @@ let data = [];
 let track;
 let volume = 1.0; // Starting volume (0.0 to 1.0)
 let fadeAmount = 0.01; // Amount to decrease the volume each frame
+let pitch = 1.0;
+
+
+function preload() {
+   track = loadSound("mendrisio-track-one.mp3", sounLoaded);
+}
 
 // A function that loads the model from the checkpoint
 async function load() {
@@ -32,7 +38,7 @@ async function load() {
   console.log("Number of classes, ", totalClasses);
   table = loadTable('data-assets/mendrisio-weather.csv', 'csv', 'header', extractData);
   console.log(table);
-  track = loadSound("mendrisio-track-one.mp3", sounLoaded);
+ 
   //extractData();
 }
 
@@ -109,12 +115,24 @@ function draw() {
      } else if (volume <1) {
         volume += fadeAmount;
         track.setVolume(volume);
-       }
+     }
      if (classification == "stop") {
         track.setVolume(0);
      } else if (classification == "play") {
         track.setVolume(volume);
-       }
+     }
+     if (classification == "pitch") {
+        pitch += fadeAmount;
+        track.rate(pitch);
+     } else if (pitch > 1.0) {
+        pitch -= fadeAmount; ;
+        track.rate(pitch);
+     } else {
+      pitch -= fadeAmount;
+    // Limit the bottom value of the pitch to 1
+      pitch = max(pitch, 1.0);
+      track.rate(pitch);
+    }
   }
 
      
