@@ -103,10 +103,10 @@ function draw() {
   ///ALEX insert if statement here testing classification against apppropriate part of array for this time in your video
   if (probability > 0.5 && classification != "None") {
      push();
-     textSize(120);
+     textSize(500);
      fill(255);
      textAlign(CENTER);
-     text(classification, width / 2, height - 50);
+     text(classification, width / 2, height /2);
      pop();
      // you can use thia part for to something
      if (classification == "volume" && volume >0) {
