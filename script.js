@@ -19,6 +19,7 @@ let button;
 
 let table;
 let data = [];
+let randomNum = (Math.random() * (15.9 - 1.1) + 1.1).toFixed(1);
 
 //music related varibles
 let track;
@@ -27,6 +28,12 @@ let fadeAmount = 0.03; // Amount to decrease the volume each frame
 let pitch = 1.0;
 
 let frameCountOffset = 0;
+
+let message = "";
+
+function updateMessage(datetime, temp, humidity, windspeed) {
+  message = `AT ${datetime} I FELT ${temp}°C, AND A HUMIDITY OF ${humidity}%. THE WIND WAS TRAVELLING AT ${randomNum}m/s`;
+}
 
 function preload() {
    track = loadSound("mendrisio-track-one.mp3", sounLoaded);
@@ -161,7 +168,7 @@ function draw() {
     }
   }
 
-  textSize(14);
+  textSize(1);
   if (poser) { //did we get a skeleton yet;
     for (var i = 0; i < poser.length; i++) {
       let x = poser[i].position.x;
@@ -170,6 +177,12 @@ function draw() {
       text(poser[i].part, x + 4, y);
     }
   }
+
+  fill(255);
+  textAlign(LEFT);
+  textFont(fontRegular);
+  textSize(20);
+  text(message, 300, height - 55); // Adjust the position according to your preference
 }
 
 function videoReady() {
@@ -195,6 +208,14 @@ async function predict() {
     flipHorizontal,
     totalClasses
   );
+
+  let datetime = data[frameCount % data.length].datetime;
+  let temp = data[frameCount % data.length].temp;
+  let humidity = data[frameCount % data.length].humidity;
+  let windspeed = data[frameCount % data.length].windspeed; // Replace 'windspeed' with the actual column name from your CSV data
+
+  // Call the updateMessage() function to update the dynamic message
+  updateMessage(datetime, temp, humidity, windspeed);
 
   // console.log(prediction);
   
