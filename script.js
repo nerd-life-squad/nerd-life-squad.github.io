@@ -57,6 +57,7 @@ async function setup() {
   button.style("border", "none");
   button.style("padding", "12px 16px");
   button.style("border-radius", "60px");
+  track.setVolume(volume); // Set the initial volume
 }
 
 function extractData() {
@@ -109,7 +110,14 @@ function draw() {
         volume += fadeAmount;
         track.setVolume(volume);
        }
-     }
+     if (classification == "stop") {
+        track.setVolume(0);
+     } else if (classification == "play") {
+        track.setVolume(volume);
+       }
+  }
+
+     
   textSize(12);
   if (poser) { //did we get a skeleton yet;
     for (var i = 0; i < poser.length; i++) {
