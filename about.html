@@ -7,20 +7,100 @@
 </head>
 
 <body>
+	<div class="container-title">
+		<div class="column col-1">
+			<video autoplay muted loop id="video-bg">
+				<style>
+					html, body {
+					  height: 100%;
+					  margin: 20;
+					}
+					#video-bg {
+					  position: fixed;
+					  top: 0;
+					  left: 0;
+					  width: 100%; /* Set the desired width */
+					  height: 100%; /* Set the desired height */
+					  z-index: -1;
+					  object-fit: cover;
+					}
+				  </style>
+				<source src="images/runway_01.mp4" type="video/mp4">
+				<!-- You can add additional sources for different formats here -->
+				Your browser does not support the video tag.
+			  </video>
+		</div>
+	</div>
+	<div class="container-intro">
+		<div class="column col-1">
+			<h1 style="line-height: 85%; ;">DEW you wanna communicate?</h1>
+			<img src="">
+		</div>
+	</div>
 	<div class="container">
 		<div class="column col-2">
-			<h1>Concept </h1>
-			<p>What’s the difference between a human and a computer ? 
-				Humans exist in the physical world, with sensory perception and motor skills.
-				Computers are digital entities that do not have physical presence.
-				They interact with the world through input devices and output devices, 
-				but they lack direct sensory experiences.	
-			</p>
+			<h1 style="line-height: 85%;">Can machines have a sensorial experience of the physical world?</h1>
+			<p style="color: aliceblue;""> Machines don't have a physical presence, but if we feed them the right inputs, they'll have a sensory perception that represents some extent of reality.</p>
 			<img src="">
 		</div>
 		<div class="column col-2">
-			<h1>Dew</h1>
-			<p>Lore ipsum dolor sit amet</p>
+			<h1 style="line-height: 85%;">How does it work?</h1>
+			<p style="color: aliceblue;">DEW, short for Digital Embodiedment Wave, is a new entity that uses collected data from the weather (temperature, humidity, windspeed, solar radiation) and generates music. <br><br> DEW communicates what it sees from the data that we're feeding her (her perspective), generates sound, and then you can play and communicate with her trough gesture and create something new together. But be careful, if the day is too warm, she might not be in the mood to play!</p>
+			<img src="">
+		</div>
+	</div>
+	<hr>
+	<div class="container">
+		<div class="column col-2">
+			<h1 style="line-height: 85%;">Communicate and create with DEW</h1>
+			<p style="color:aliceblue;"">With four simple gestures, you can communicate and create a new track with DEW. Shall we make an orchestra? Can you imagine playing at the same time with your friends?</p>
+			<img src="">
+		</div>
+		<div class="column col-2">
+			<img src="">
+		</div>
+	</div>
+	<div class="container">
+		<div class="column col-2">
+			<h1 style="line-height: 85%;">Pricing</h1>
+			<img src="">
+		</div>
+		<div class="column col-2">
+			<h2 style="color:aliceblue;">9.99$/monthly subscription</h2> 
+			<p style="color:aliceblue;"">DEW is getting more inputs by the day, in a couple of months it will be able to have data not only from the climate but from geolocalization, and create music. Subscribe to be the first to try it. *If you surprise us with something crazy, maybe we'll give you access for free*</p>
+			<img src="">
+		</div>
+	</div>
+	<hr>
+	<div class="container">
+		<div class="column col-2">
+			<h1 style="line-height: 85%;">Contact us</h1>
+			<p style="color: aliceblue;"> We're excited to introduce our innovative communication model that's changing the way people interact and connect. If you have any questions, feedback, or just want to know more about our groundbreaking approach to communication, we'd love to hear from you!</p>
+			<img src="">
+		</div>
+		<div class="column col-2" style="color: aliceblue; text-align: end; align-items: center;">
+			<br>
+			<br>
+			<br>
+			<form action="submit_form.php" method="post">
+				<label for="name">Name:</label>
+				<input type="text" id="name" name="name" required>
+			
+				<label for="email">Email:</label>
+				<input type="email" id="email" name="email" required>
+			
+				<label for="message">Message:</label>
+				<textarea id="message" name="message" rows="1" required></textarea>
+			
+				<button type="submit">Send E-mail</button>
+			<img src="">
+		</div>
+	</div>
+	<hr>
+	<div class="container">
+		<div class="column col-2">
+			<h2 style="line-height: 85%;">DEW &copy 2023, SUPSI</h2>
+			<p style="color: aliceblue;""> Designing With: Integrating Machine Learning, Artificial Intelligence and Data Visualization in Design Curricula.</p>
 			<img src="">
 		</div>
 	</div>
