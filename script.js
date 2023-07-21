@@ -1,5 +1,4 @@
-
-const modelURL = 'https://teachablemachine.withgoogle.com/models/COSKN4igO/';
+const modelURL = 'https://teachablemachine.withgoogle.com/models/hnYeQo6zI/';
 // the json file (model topology) has a reference to the bin file (model weights)
 const checkpointURL = modelURL + "model.json";
 // the metatadata json file contains the text labels of your model and additional information
@@ -18,13 +17,28 @@ let poser;
 let video;
 let button;
 
+let table;
+let data = [];
+
+//music related varibles
+let track;
+let volume = 1.0; // Starting volume (0.0 to 1.0)
+let fadeAmount = 0.01; // Amount to decrease the volume each frame
+
 // A function that loads the model from the checkpoint
 async function load() {
   model = await tmPose.load(checkpointURL, metadataURL);
   totalClasses = model.getTotalClasses();
   console.log("Number of classes, ", totalClasses);
+  table = loadTable('data-assets/mendrisio-weather.csv', 'csv', 'header', extractData);
+  console.log(table);
+  track = loadSound("mendrisio-track-one.mp3", sounLoaded);
+  //extractData();
 }
 
+function sounLoaded() {
+  track.play();
+}
 
 async function setup() {
   fontRegular = loadFont('Power-Grotesk/PowerGrotesk-Regular.otf');
@@ -35,7 +49,7 @@ async function setup() {
   video.hide();
 
   button = createButton('ABOUT THIS PROJECT');
-  button.position(30, windowHeight -60);
+  button.position(30, windowHeight -80);
   button.mousePressed(about);
   col = color(0, 240, 255);
   button.style("text-font", fontRegular);
@@ -45,15 +59,32 @@ async function setup() {
   button.style("border-radius", "60px");
 }
 
+function extractData() {
+  // Extract data from the specific columns (time, temp, humidity)
+  for (let i = 0; i < table.getRowCount(); i++) {
+    let datetime = table.getString(i, 'datetime');
+    let temp = table.getNum(i, 'temp');
+    let humidity = table.getNum(i, 'humidity');
+
+    data.push({
+      datetime: datetime,
+      temp: temp,
+      humidity: humidity
+    });
+  }
+  console.log("Data:", data);
+}
+
 function about() {
   window.open('../about.html');
 }
 
 function draw() {
   background(255);
-  if(video) 
-    image(video,0,0,width, height);
+  if(video){
+    image(video, 0, 0, width, height);
     filter(GRAY);
+  }
   fill(0,240,255);
   textFont(fontRegular);
   textSize(60);
@@ -63,7 +94,22 @@ function draw() {
 
   text("Probability:" + probability, 30, 130)
   ///ALEX insert if statement here testing classification against apppropriate part of array for this time in your video
-
+  if (probability > 0.5 && classification != "None") {
+     push();
+     textSize(120);
+     fill(255);
+     textAlign(CENTER);
+     text(classification, width / 2, height - 50);
+     pop();
+     // you can use thia part for to something
+     if (classification == "volume" && volume >0) {
+        volume -= fadeAmount;
+        track.setVolume(volume);
+     } else if (volume <1) {
+        volume += fadeAmount;
+        track.setVolume(volume);
+       }
+     }
   textSize(12);
   if (poser) { //did we get a skeleton yet;
     for (var i = 0; i < poser.length; i++) {
@@ -73,7 +119,6 @@ function draw() {
       text(poser[i].part, x + 4, y);
     }
   }
-
 }
 
 function videoReady() {
@@ -112,6 +157,9 @@ async function predict() {
   if (pose) poser = pose.keypoints; // is there a skeleton
   predict();
 }
+
+
+
 
 // /*
 // Here we check the result we get from the posnet teachable machine.
