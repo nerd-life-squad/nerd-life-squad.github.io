@@ -103,10 +103,10 @@ function draw() {
   ///ALEX insert if statement here testing classification against apppropriate part of array for this time in your video
   if (probability > 0.5 && classification != "None") {
      push();
-     textSize(500);
+     textSize(250);
      fill(255);
      textAlign(CENTER);
-     text(classification, width / 2, height /2);
+     text(classification, width / 2, height -50);
      pop();
      // you can use thia part for to something
      if (classification == "volume" && volume >0) {
@@ -144,6 +144,20 @@ function draw() {
       ellipse(x, y, 5, 5);
       text(poser[i].part, x + 4, y);
     }
+  }
+
+  if (mySound.isPlaying()) {
+    let waveform = mySound.getPeaks(width);
+    noFill();
+    beginShape();
+    stroke(0, 240, 255); // Blue color for the waveform
+    strokeWeight(2);
+    for (let i = 0; i < waveform.length; i++) {
+      let x = map(i, 0, waveform.length, 0, width);
+      let y = map(waveform[i], -1, 1, height, 0);
+      vertex(x, y);
+    }
+    endShape();
   }
 }
 
